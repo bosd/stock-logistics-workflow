@@ -23,7 +23,7 @@ class StockQuant(models.Model):
         self,
         product_id,
         location_id,
-        quantity,
+        reserved_quantity,
         lot_id=None,
         package_id=None,
         owner_id=None,
@@ -38,11 +38,11 @@ class StockQuant(models.Model):
         return super()._update_available_quantity(
             product_id,
             location_id,
-            quantity,
-            lot_id,
-            package_id,
-            owner_id,
-            in_date,
+            reserved_quantity,
+            lot_id=lot_id,
+            package_id=package_id,
+            owner_id=owner_id,
+            in_date=in_date,
         )
 
     def _apply_inventory(self):
@@ -62,7 +62,9 @@ class StockQuant(models.Model):
 
     @api.model
     def _get_inventory_fields_write(self):
-        """Returns a list of fields user can edit when editing a quant in `inventory_mode`."""
+        """
+        Returns a list of fields user can edit when editing a quant in `inventory_mode`.
+        """
         res = super()._get_inventory_fields_write()
         res += ["date_backdating"]
         return res
